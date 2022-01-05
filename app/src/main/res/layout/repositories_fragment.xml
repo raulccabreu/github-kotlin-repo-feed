@@ -4,10 +4,10 @@
     <data>
         <variable
             name="adapter"
-            type="com.example.githubktrepofeed.ui.repofeed.RepositoriesAdapter" />
+            type="com.example.githubktrepofeed.ui.repositories.RepositoriesAdapter" />
         <variable
             name="viewModel"
-            type="com.example.githubktrepofeed.ui.repofeed.RepositoriesViewModel" />
+            type="com.example.githubktrepofeed.ui.repositories.RepositoriesViewModel" />
     </data>
 
     <RelativeLayout

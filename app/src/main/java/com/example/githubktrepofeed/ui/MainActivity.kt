@@ -1,8 +1,9 @@
-package com.example.githubktrepofeed
+package com.example.githubktrepofeed.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.githubktrepofeed.ui.repofeed.RepositoriesFragment
+import com.example.githubktrepofeed.R
+import com.example.githubktrepofeed.ui.repositories.RepositoriesFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.githubktrepofeed.ui.repofeed
+package com.example.githubktrepofeed.ui.repositories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.githubktrepofeed.RepositoriesApplication
 import com.example.githubktrepofeed.data.RepositoriesData
 import com.example.githubktrepofeed.data.network.retrofit.RetrofitService
 import com.example.githubktrepofeed.databinding.RepositoriesFragmentBinding
@@ -34,7 +35,7 @@ class RepositoriesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, RepositoriesViewModelFactory(
-            RepositoriesData(RetrofitService))
+                (context?.applicationContext as RepositoriesApplication).repositoriesData)
         )[RepositoriesViewModel::class.java]
     }
 

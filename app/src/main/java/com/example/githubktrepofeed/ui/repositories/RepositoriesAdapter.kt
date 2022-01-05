@@ -1,4 +1,4 @@
-package com.example.githubktrepofeed.ui.repofeed
+package com.example.githubktrepofeed.ui.repositories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,13 +1,14 @@
 package com.example.githubktrepofeed.data.network
 
+import com.example.githubktrepofeed.data.database.DatabaseRepository
 import com.example.githubktrepofeed.domain.models.Repository
 import com.google.gson.annotations.SerializedName
 
 data class NetworkRepositories(@SerializedName("items") val repositories: List<NetworkRepository>)
 
-fun NetworkRepositories.asDomainModel(): List<Repository> {
+fun NetworkRepositories.asDatabaseModel(): List<DatabaseRepository> {
     return repositories.map {
-        Repository(
+        DatabaseRepository(
             id = it.id,
             name = it.name,
             stars = it.stars,

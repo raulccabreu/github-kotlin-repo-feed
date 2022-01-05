@@ -1,35 +1,38 @@
-package com.example.githubktrepofeed.ui.repofeed
+package com.example.githubktrepofeed.ui.repositories
 
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.githubktrepofeed.data.RepositoriesData
-import com.example.githubktrepofeed.data.network.NetworkService
+import com.example.githubktrepofeed.data.database.asDomainModel
 import com.example.githubktrepofeed.domain.models.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RepositoriesViewModel(private val repositoriesData: RepositoriesData) : ViewModel() {
-    private val _repositories = MutableLiveData<List<Repository>>()
-    val repositories: LiveData<List<Repository>>
-        get() = _repositories
+    val repositories: LiveData<List<Repository>> =
+        Transformations.map(repositoriesData.getRepositories().asLiveData()) {
+            it.asDomainModel()
+        }
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
         get() = _loading
 
     init {
-        getRepositories()
+        refreshRepositories()
     }
 
-    private fun getRepositories() {
+    private fun refreshRepositories() {
         viewModelScope.launch {
-            try {
-                _loading.value = true
-                val repositories = repositoriesData.getRepositories("language:kotlin", "stars", 1)
-                _repositories.value = repositories
-            } catch (e: Exception) {
-                Log.e("RepositoriesViewModel", "${e.message}")
-                _repositories.value = emptyList()
-            } finally {
-                _loading.value = false
+            withContext(Dispatchers.IO) {
+                try {
+                    _loading.postValue(true)
+                    repositoriesData.refreshRepositories("language:kotlin", "stars", 1)
+                } catch (e: Exception) {
+                    Log.e("RepositoriesViewModel", "${e.message}")
+                } finally {
+                    _loading.postValue(false)
+                }
             }
         }
     }

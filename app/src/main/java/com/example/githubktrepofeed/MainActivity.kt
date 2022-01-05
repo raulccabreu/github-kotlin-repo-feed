@@ -2,7 +2,7 @@ package com.example.githubktrepofeed
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.githubktrepofeed.ui.main.MainFragment
+import com.example.githubktrepofeed.ui.repofeed.RepositoriesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
+                    .replace(R.id.container, RepositoriesFragment.newInstance())
                     .commitNow()
         }
     }

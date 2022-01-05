@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.githubktrepofeed.data.RepositoriesData
 import com.example.githubktrepofeed.data.network.retrofit.RetrofitService
 import com.example.githubktrepofeed.databinding.RepositoriesFragmentBinding
 
@@ -22,13 +23,19 @@ class RepositoriesFragment : Fragment() {
         val binding = RepositoriesFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        val repositoriesAdapter = RepositoriesAdapter()
+        binding.adapter = repositoriesAdapter
+        viewModel.repositories.observe(viewLifecycleOwner, {
+            it.let(repositoriesAdapter::submitList)
+        })
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this,
-            RepositoriesViewModelFactory(RetrofitService))[RepositoriesViewModel::class.java]
+        viewModel = ViewModelProvider(this, RepositoriesViewModelFactory(
+            RepositoriesData(RetrofitService))
+        )[RepositoriesViewModel::class.java]
     }
 
 }

@@ -1,17 +1,27 @@
 package com.example.githubktrepofeed.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.githubktrepofeed.data.database.DatabaseRepository
 import com.example.githubktrepofeed.data.database.DatabaseService
+import com.example.githubktrepofeed.data.network.NetworkRepository
 import com.example.githubktrepofeed.data.network.NetworkService
-import com.example.githubktrepofeed.data.network.asDatabaseModel
 import kotlinx.coroutines.flow.Flow
+
+private const val GITHUB_PAGE_SIZE = 30
 
 //Repository Pattern
 class RepositoriesData(private val networkService: NetworkService,
                        private val databaseService: DatabaseService) {
-    suspend fun refreshRepositories(keywords: String, sort: String, page: Int) {
-        databaseService.saveAllRepositories(
-            networkService.getRepositories(keywords, sort, page).asDatabaseModel())
+    fun fetchRepositories(): Flow<PagingData<NetworkRepository>> {
+        return  Pager(
+            config = PagingConfig(
+                pageSize = GITHUB_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { RepositoriesPagingSource(networkService) }
+        ).flow
     }
 
     fun getRepositories() : Flow<List<DatabaseRepository>> {

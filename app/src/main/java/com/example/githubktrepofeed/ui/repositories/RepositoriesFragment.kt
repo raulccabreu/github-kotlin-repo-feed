@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubktrepofeed.RepositoriesApplication
-import com.example.githubktrepofeed.data.RepositoriesData
-import com.example.githubktrepofeed.data.network.retrofit.RetrofitService
 import com.example.githubktrepofeed.databinding.RepositoriesFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class RepositoriesFragment : Fragment() {
 
@@ -26,9 +28,11 @@ class RepositoriesFragment : Fragment() {
         binding.viewModel = viewModel
         val repositoriesAdapter = RepositoriesAdapter()
         binding.adapter = repositoriesAdapter
-        viewModel.repositories.observe(viewLifecycleOwner, {
-            it.let(repositoriesAdapter::submitList)
-        })
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.pagingDataFlow.collect {
+                repositoriesAdapter.submitData(it)
+            }
+        }
         return binding.root
     }
 

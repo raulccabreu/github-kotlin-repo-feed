@@ -1,5 +1,6 @@
 package com.example.githubktrepofeed.data.network.retrofit
 
+import android.util.Log
 import com.example.githubktrepofeed.data.network.NetworkRepositories
 import com.example.githubktrepofeed.data.network.NetworkService
 import retrofit2.Retrofit
@@ -19,8 +20,7 @@ object RetrofitService : NetworkService {
         }
     }
 
-    override suspend fun getRepositories(keywords: String, sort: String, page: Int):
-            NetworkRepositories {
-        return Repositories.api.search(keywords, sort, page)
+    override suspend fun getRepositories(page: Int): NetworkRepositories {
+        return Repositories.api.search(page)
     }
 }

@@ -4,10 +4,10 @@ import com.example.githubktrepofeed.data.database.DatabaseRepository
 import com.example.githubktrepofeed.domain.models.Repository
 import com.google.gson.annotations.SerializedName
 
-data class NetworkRepositories(@SerializedName("items") val repositories: List<NetworkRepository>)
+data class NetworkRepositories(@SerializedName("items") val items: List<NetworkRepository>)
 
 fun NetworkRepositories.asDatabaseModel(): List<DatabaseRepository> {
-    return repositories.map {
+    return items.map {
         DatabaseRepository(
             id = it.id,
             name = it.name,
@@ -16,6 +16,16 @@ fun NetworkRepositories.asDatabaseModel(): List<DatabaseRepository> {
             authorName = it.author.name,
             authorAvatarUrl = it.author.avatarUrl)
     }
+}
+
+fun NetworkRepository.asDomainModel(): Repository {
+    return Repository(
+        id = this.id,
+        name = this.name,
+        stars = this.stars,
+        forks = this.forks,
+        authorName = this.author.name,
+        authorAvatarUrl = this.author.avatarUrl)
 }
 
 data class NetworkRepository(@SerializedName("node_id") val id: String,

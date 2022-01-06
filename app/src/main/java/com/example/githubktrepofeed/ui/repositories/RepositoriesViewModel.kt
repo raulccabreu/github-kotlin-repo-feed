@@ -1,40 +1,32 @@
 package com.example.githubktrepofeed.ui.repositories
 
-import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.example.githubktrepofeed.data.RepositoriesData
-import com.example.githubktrepofeed.data.database.asDomainModel
+import com.example.githubktrepofeed.data.network.asDomainModel
 import com.example.githubktrepofeed.domain.models.Repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class RepositoriesViewModel(private val repositoriesData: RepositoriesData) : ViewModel() {
-    val repositories: LiveData<List<Repository>> =
-        Transformations.map(repositoriesData.getRepositories().asLiveData()) {
-            it.asDomainModel()
-        }
+    val pagingDataFlow: Flow<PagingData<Repository>>
+
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
         get() = _loading
 
     init {
-        refreshRepositories()
+        pagingDataFlow = fetchRepositories()
     }
 
-    private fun refreshRepositories() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    _loading.postValue(true)
-                    repositoriesData.refreshRepositories("language:kotlin", "stars", 1)
-                } catch (e: Exception) {
-                    Log.e("RepositoriesViewModel", "${e.message}")
-                } finally {
-                    _loading.postValue(false)
+    private fun fetchRepositories(): Flow<PagingData<Repository>> {
+        return repositoriesData.fetchRepositories().map {
+                pagingData -> pagingData.map {
+                    it.asDomainModel()
                 }
-            }
-        }
+        }.cachedIn(viewModelScope)
     }
 }
 

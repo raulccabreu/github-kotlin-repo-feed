@@ -6,8 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RepositoriesApi {
-    @GET("search/repositories")
-    suspend fun search(@Query("q") keywords: String,
-                       @Query("sort") sort: String,
-                       @Query("page") page: Int): NetworkRepositories
+    @GET("search/repositories?q=language:kotlin&sort=stars")
+    suspend fun search(@Query("page") page: Int): NetworkRepositories
 }

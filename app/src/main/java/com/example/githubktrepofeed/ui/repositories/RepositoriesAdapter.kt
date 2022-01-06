@@ -2,13 +2,13 @@ package com.example.githubktrepofeed.ui.repositories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubktrepofeed.databinding.RepositoryBinding
 import com.example.githubktrepofeed.domain.models.Repository
 
-class RepositoriesAdapter : ListAdapter<Repository, RepositoriesAdapter.RepositoryViewHolder>
+class RepositoriesAdapter : PagingDataAdapter<Repository, RepositoriesAdapter.RepositoryViewHolder>
     (Companion) {
 
     class RepositoryViewHolder(val binding: RepositoryBinding) :

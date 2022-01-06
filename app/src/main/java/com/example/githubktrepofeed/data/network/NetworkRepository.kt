@@ -18,14 +18,16 @@ fun NetworkRepositories.asDatabaseModel(): List<DatabaseRepository> {
     }
 }
 
-fun NetworkRepository.asDomainModel(): Repository {
-    return Repository(
-        id = this.id,
-        name = this.name,
-        stars = this.stars,
-        forks = this.forks,
-        authorName = this.author.name,
-        authorAvatarUrl = this.author.avatarUrl)
+fun NetworkRepositories.asDomainModel(): List<Repository> {
+    return items.map {
+        Repository(
+            id = it.id,
+            name = it.name,
+            stars = it.stars,
+            forks = it.forks,
+            authorName = it.author.name,
+            authorAvatarUrl = it.author.avatarUrl)
+    }
 }
 
 data class NetworkRepository(@SerializedName("node_id") val id: String,

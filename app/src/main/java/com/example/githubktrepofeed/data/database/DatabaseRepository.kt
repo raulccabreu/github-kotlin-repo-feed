@@ -17,14 +17,12 @@ data class DatabaseRepository constructor(
     @ColumnInfo(name = "author_avatar_url")
     val authorAvatarUrl: String)
 
-fun List<DatabaseRepository>.asDomainModel(): List<Repository> {
-    return map {
-        Repository(
-            id = it.id,
-            name = it.name,
-            stars = it.stars,
-            forks = it.forks,
-            authorName = it.authorName,
-            authorAvatarUrl = it.authorAvatarUrl)
-    }
+fun DatabaseRepository.asDomainModel(): Repository {
+    return Repository(
+        id = this.id,
+        name = this.name,
+        stars = this.stars,
+        forks = this.forks,
+        authorName = this.authorName,
+        authorAvatarUrl = this.authorAvatarUrl)
 }

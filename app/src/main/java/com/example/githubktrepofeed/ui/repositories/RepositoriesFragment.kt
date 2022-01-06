@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.githubktrepofeed.RepositoriesApplication
 import com.example.githubktrepofeed.databinding.RepositoriesFragmentBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -25,10 +24,9 @@ class RepositoriesFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         val binding = RepositoriesFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
         val repositoriesAdapter = RepositoriesAdapter()
         binding.adapter = repositoriesAdapter
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             viewModel.pagingDataFlow.collect {
                 repositoriesAdapter.submitData(it)
             }
